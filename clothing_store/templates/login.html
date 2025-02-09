@@ -1,21 +1,28 @@
-{% extends 'base.html' %}
-
-{% block title %}เข้าสู่ระบบ{% endblock %}
+{% extends "base.html" %}
 
 {% block content %}
 <div class="login-container">
     <h2>เข้าสู่ระบบ</h2>
-    <form method="post">
+
+    <!-- แสดงข้อความแจ้งเตือนเมื่อมีข้อผิดพลาด -->
+    {% if form.errors %}
+        <div class="alert error">
+            <p>❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</p>
+        </div>
+    {% endif %}
+
+    <form method="POST">
         {% csrf_token %}
         <label for="username">ชื่อผู้ใช้:</label>
         <input type="text" id="username" name="username" required>
-
+    
         <label for="password">รหัสผ่าน:</label>
         <input type="password" id="password" name="password" required>
-
+    
         <button type="submit">เข้าสู่ระบบ</button>
     </form>
+    
 
-    <p>ยังไม่มีบัญชี? <a href="#">สมัครสมาชิก</a></p>
+    <p class="register-link">ยังไม่มีบัญชี? <a href="{% url 'signup' %}">สมัครสมาชิก</a></p>
 </div>
 {% endblock %}

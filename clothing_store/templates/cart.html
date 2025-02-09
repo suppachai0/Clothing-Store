@@ -1,8 +1,21 @@
 {% extends 'base.html' %}
-
 {% block title %}ตะกร้าสินค้า{% endblock %}
-
 {% block content %}
-<h1>ตะกร้าสินค้า</h1>
-<p>ยังไม่มีสินค้าในตะกร้า</p>
+<h2>ตะกร้าสินค้า</h2>
+<table>
+    <tr>
+        <th>สินค้า</th>
+        <th>จำนวน</th>
+        <th>ราคา</th>
+    </tr>
+    {% for item in cart_items %}
+    <tr>
+        <td>{{ item.product.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.product.price }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">ไม่มีสินค้าในตะกร้า</td></tr>
+    {% endfor %}
+</table>
 {% endblock %}

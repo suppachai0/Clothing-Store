@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}ชำระเงิน{% endblock %}
+
+{% block content %}
+<div class="checkout-container">
+    <h2>ชำระเงิน</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <h3>📍 ที่อยู่ในการจัดส่ง</h3>
+        {{ address_form.as_p }}
+
+        <h3>💳 วิธีการชำระเงิน</h3>
+        {{ payment_form.as_p }}
+
+        <button type="submit" class="btn">ดำเนินการชำระเงิน</button>
+    </form>
+</div>
+{% endblock %}
