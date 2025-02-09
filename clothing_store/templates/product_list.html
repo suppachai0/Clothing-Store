@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}สินค้า - ร้านเสื้อผ้า{% endblock %}
+
+{% block content %}
+<h2>รายการสินค้า</h2>
+<div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        <h3>{{ product.name }}</h3>
+        <p>ราคา: ฿{{ product.price }}</p>
+        <a href="{% url 'add_to_cart' product.id %}" class="btn">เพิ่มลงตะกร้า</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

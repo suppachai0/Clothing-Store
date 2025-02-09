@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'clothing_store',
+    'clothing_store',  # <- ต้องเพิ่มอันนี้
 ]
 
 MIDDLEWARE = [
@@ -51,11 +51,17 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'myshop1.urls'
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),  # ✅ โฟลเดอร์ templates หลัก
+            os.path.join(BASE_DIR, 'clothing_store', 'templates')  # ✅ โฟลเดอร์ templates ใน clothing_store
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,6 +73,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'myshop1.wsgi.application'
 
@@ -126,3 +133,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import os
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'clothing_store', 'static'),  # ✅ ตำแหน่งไฟล์ static
+]
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
