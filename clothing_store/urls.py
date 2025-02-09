@@ -11,4 +11,6 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('checkout/', views.checkout_view, name='checkout'),
     path('payment-success/', views.payment_success, name='payment_success'),  # ✅ เพิ่มเส้นทางนี้
+    path('order-history/', views.order_history, name='order_history'),
+    path('order/<int:order_id>/', views.order_detail, name='order_detail'),
 ]

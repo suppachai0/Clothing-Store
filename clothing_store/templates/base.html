@@ -15,6 +15,7 @@
         <a href="{% url 'cart' %}">ตะกร้า</a>
     
         {% if user.is_authenticated %}
+        <a href="{% url 'order_history' %}">ประวัติการสั่งซื้อ</a>
             <a href="{% url 'logout' %}">ออกจากระบบ ({{ user.username }})</a>
         {% else %}
             <a href="{% url 'login' %}">เข้าสู่ระบบ</a>

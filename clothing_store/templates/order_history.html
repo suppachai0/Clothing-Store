@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>📦 ประวัติการสั่งซื้อ</h2>
+{% extends "base.html" %}
+
+{% block content %}
+<h2>ประวัติคำสั่งซื้อ</h2>
+<table>
+    <thead>
+        <tr>
+            <th>รหัสคำสั่งซื้อ</th>
+            <th>วันที่สั่งซื้อ</th>
+            <th>ราคารวม</th>
+            <th>ดูรายละเอียด</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.created_at }}</td>
+            <td>{{ order.total_price }} บาท</td>
+            <td><a href="{% url 'order_detail' order.id %}">ดูรายละเอียด</a></td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">ไม่มีคำสั่งซื้อ</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+<ul>
+    {% for item in order.orderitem_set.all %}
+        <li>{{ item.product.name }} - {{ item.quantity }} ชิ้น ({{ item.total_price }} บาท)</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'order_history' %}">ย้อนกลับ</a>
+</table>
+{% endblock %}
