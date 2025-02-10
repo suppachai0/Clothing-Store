@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="order-container">
+    <h2>📜 รายละเอียดคำสั่งซื้อ #{{ order.id }}</h2> <!-- ✅ แสดง Order ID -->
+
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>สินค้า</th>
+                <th>ขนาด</th>
+                <th>สี</th>
+                <th>จำนวน</th>
+                <th>ราคา</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order_items %}
+            <tr>
+                <td>#{{ item.id }}</td>  <!-- ✅ แสดง OrderItem ID -->
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.size }}</td>
+                <td>{{ item.color }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.product.price|floatformat:2 }} บาท</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p class="total-price">💰 ราคารวม: <span class="price">{{ order.total_price|floatformat:2 }} บาท</span></p>
+
+    <a href="{% url 'order_history' %}" class="btn btn-secondary">🔙 กลับไปที่ประวัติการสั่งซื้อ</a>
+</div>
+{% endblock %}

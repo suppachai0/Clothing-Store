@@ -1,28 +1,26 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block title %}เข้าสู่ระบบ{% endblock %}
 
 {% block content %}
-<div class="login-container">
-    <h2>เข้าสู่ระบบ</h2>
-
-    <!-- แสดงข้อความแจ้งเตือนเมื่อมีข้อผิดพลาด -->
-    {% if form.errors %}
-        <div class="alert error">
-            <p>❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</p>
-        </div>
-    {% endif %}
-
-    <form method="POST">
+<div class="form-container">
+    <h2>🔑 เข้าสู่ระบบ</h2>
+    <form method="post">
         {% csrf_token %}
-        <label for="username">ชื่อผู้ใช้:</label>
-        <input type="text" id="username" name="username" required>
-    
-        <label for="password">รหัสผ่าน:</label>
-        <input type="password" id="password" name="password" required>
-    
-        <button type="submit">เข้าสู่ระบบ</button>
+        <div class="form-group">
+            <label>ชื่อผู้ใช้:</label>
+            <input type="text" name="username" required>
+        </div>
+        <div class="form-group">
+            <label>รหัสผ่าน:</label>
+            <input type="password" name="password" required>
+        </div>
+        {% if error %}
+            <p class="error-message">❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</p>
+        {% endif %}
+        <button type="submit" class="btn">🔓 เข้าสู่ระบบ</button>
     </form>
-    
-
-    <p class="register-link">ยังไม่มีบัญชี? <a href="{% url 'signup' %}">สมัครสมาชิก</a></p>
+    <p>ยังไม่มีบัญชี? <a href="{% url 'signup' %}">สมัครสมาชิก</a></p>
 </div>
 {% endblock %}

@@ -1,21 +1,44 @@
-{% extends 'base.html' %}
-{% block title %}ตะกร้าสินค้า{% endblock %}
+{% extends "base.html" %}
+
 {% block content %}
-<h2>ตะกร้าสินค้า</h2>
-<table>
+<h2 class="page-title">🛒 ตะกร้าสินค้า</h2>
+
+{% if cart_items %}
+<table class="cart-table">
     <tr>
+        <th>#</th>  <!-- ✅ เพิ่มหมายเลข CartItem -->
         <th>สินค้า</th>
+        <th>ขนาด</th>
+        <th>สี</th>
         <th>จำนวน</th>
         <th>ราคา</th>
+        <th>ลบ</th>
     </tr>
     {% for item in cart_items %}
     <tr>
+        <td>#{{ item.id }}</td>  <!-- ✅ แสดง CartItem ID -->
         <td>{{ item.product.name }}</td>
-        <td>{{ item.quantity }}</td>
-        <td>{{ item.product.price }}</td>
+        <td>{{ item.size }}</td>
+        <td>{{ item.color }}</td>
+        <td>
+            <form action="{% url 'update_cart' item.id %}" method="POST">
+                {% csrf_token %}
+                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="width: 50px;">
+                <button type="submit" class="btn btn-secondary">อัปเดต</button>
+            </form>
+        </td>
+        <td>{{ item.product.price }} บาท</td>
+        <td>
+            <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger">❌ ลบ</a>
+        </td>
     </tr>
-    {% empty %}
-    <tr><td colspan="3">ไม่มีสินค้าในตะกร้า</td></tr>
     {% endfor %}
 </table>
+
+<a href="{% url 'checkout' %}" class="btn btn-primary">ไปที่การชำระเงิน</a>
+
+
+{% else %}
+<p class="no-products">🛒 ตะกร้าสินค้าของคุณว่างเปล่า</p>
+{% endif %}
 {% endblock %}

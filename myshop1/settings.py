@@ -12,15 +12,20 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-oz98xdgksvlwgh+4tw*uyi*jq9wlc+88^#!zvnx2+khq#k=y_9'
+SECRET_KEY = env('SECRET_KEY', default='django-insecure-oz98xdgksvlwgh+4tw*uyi*jq9wlc+88^#!zvnx2+khq#k=y_9')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=True)
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
@@ -73,11 +78,11 @@ WSGI_APPLICATION = 'myshop1.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'myshop_db',  # ชื่อฐานข้อมูลที่คุณต้องการใช้
-        'USER': 'root',  # ชื่อผู้ใช้ MySQL
-        'PASSWORD': '123456789',  # ใส่รหัสผ่านของ MySQL
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': env('DB_NAME', default='myshop_db'),  # ชื่อฐานข้อมูลที่คุณต้องการใช้
+        'USER': env('DB_USER', default='root'),  # ชื่อผู้ใช้ MySQL
+        'PASSWORD': env('DB_PASSWORD', default='123456789'),  # ใส่รหัสผ่านของ MySQL
+        'HOST': env('DB_HOST', default='localhost'),
+        'PORT': env('DB_PORT', default='3306'),
         'OPTIONS': {
             'sql_mode': 'STRICT_TRANS_TABLES',  # ✅ เปิด Strict Mode
         },
@@ -115,3 +120,5 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
 LOGIN_URL = '/login/'  # ✅ แก้ไขให้ถูกต้อง
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

@@ -4,24 +4,31 @@
 {% block title %}สมัครสมาชิก{% endblock %}
 
 {% block content %}
-    <div class="form-container">
-        <h2>สมัครสมาชิก</h2>
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                {{ form.username.label_tag }}
-                {{ form.username }}
-            </div>
-            <div class="form-group">
-                {{ form.password1.label_tag }}
-                {{ form.password1 }}
-            </div>
-            <div class="form-group">
-                {{ form.password2.label_tag }}
-                {{ form.password2 }}
-            </div>
-            <button type="submit" class="btn">สมัครสมาชิก</button>
-        </form>
-        <p>มีบัญชีอยู่แล้ว? <a href="{% url 'login' %}">เข้าสู่ระบบ</a></p>
-    </div>
+<div class="form-container">
+    <h2>📝 สมัครสมาชิก</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.username.label_tag }} 
+            {{ form.username }}
+        </div>
+        <div class="form-group">
+            {{ form.email.label_tag }} 
+            {{ form.email }}  <!-- ✅ เพิ่มช่องอีเมล -->
+        </div>
+        <div class="form-group">
+            {{ form.password1.label_tag }} 
+            {{ form.password1 }}
+        </div>
+        <div class="form-group">
+            {{ form.password2.label_tag }} 
+            {{ form.password2 }}
+        </div>
+        {% if form.errors %}
+            <p class="error-message">⚠️ กรุณาตรวจสอบข้อมูลให้ถูกต้อง</p>
+        {% endif %}
+        <button type="submit" class="btn">✅ สมัครสมาชิก</button>
+    </form>
+    <p>มีบัญชีอยู่แล้ว? <a href="{% url 'login' %}">เข้าสู่ระบบ</a></p>
+</div>
 {% endblock %}
