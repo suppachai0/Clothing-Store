@@ -1,5 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+
+# ✅ ใช้ CustomUser แทน User
+class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True, blank=False, null=False)  # บังคับให้กรอก
+
+    def __str__(self):
+        return self.username
 
 # 🛍️ สินค้า
 class Product(models.Model):
@@ -16,7 +23,7 @@ class Product(models.Model):
 
 # 🛒 ตะกร้าสินค้า
 class Cart(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)  # 🔥 เปลี่ยนจาก User เป็น CustomUser
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -60,7 +67,7 @@ class Order(models.Model):
         ('cancelled', 'ยกเลิก'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  # 🔥 เปลี่ยนจาก User เป็น CustomUser
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
