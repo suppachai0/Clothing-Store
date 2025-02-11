@@ -1,0 +1,134 @@
+/* ✅ ปรับขนาดตารางให้ดูดีขึ้น */
+.cart-table {
+    width: 85%;
+    max-width: 900px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ✅ หัวตาราง */
+.cart-table th {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    font-size: 16px;
+}
+
+/* ✅ ข้อมูลตาราง */
+.cart-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+/* ✅ ปรับขนาดของช่องป้อนจำนวนสินค้า */
+.cart-table input[type="number"] {
+    width: 50px;
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* ✅ ปรับขนาดของปุ่ม */
+.cart-table .btn {
+    padding: 6px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* ✅ ปรับปุ่มอัปเดต */
+.btn-secondary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px 5px;
+}
+
+.btn-secondary:hover {
+    background-color: #0056b3;
+}
+
+/* ✅ ปรับปุ่มลบ */
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    padding: 4px 8px;
+    font-size: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background-color: #b52b3a;
+}
+
+/* ✅ ปุ่มไปที่การชำระเงิน */
+.btn-primary {
+    display: block;
+    width: 220px;
+    margin: 20px auto;
+    text-align: center;
+    background-color: #28a745;
+    color: white;
+    padding: 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #218838;
+}
+
+/* ✅ ทำให้ตารางแสดงแนวตั้งในหน้าจอเล็ก */
+@media screen and (max-width: 768px) {
+    .cart-table {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .cart-table th,
+    .cart-table td {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .cart-table .btn {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+
+    .btn-primary {
+        width: 180px;
+        font-size: 14px;
+    }
+
+    /* ✅ ปรับการแสดงผลให้เป็นบล็อกเมื่ออยู่บนมือถือ */
+    .cart-table tr {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .cart-table th,
+    .cart-table td {
+        display: block;
+        text-align: left;
+        padding: 8px;
+    }
+
+    .cart-table td:first-child {
+        font-weight: bold;
+        color: #555;
+    }
+}

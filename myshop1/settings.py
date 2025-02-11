@@ -122,3 +122,5 @@ LOGOUT_REDIRECT_URL = 'index'
 LOGIN_URL = '/login/'  # ✅ แก้ไขให้ถูกต้อง
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+AUTH_USER_MODEL = 'clothing_store.CustomUser'
+
