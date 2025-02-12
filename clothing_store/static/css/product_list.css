@@ -1,80 +1,50 @@
-/* ✅ ปรับให้สินค้าเรียงจากซ้ายไปขวา */
 .product-grid {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;  /* จัดให้อยู่ตรงกลาง */
-    gap: 20px; /* ระยะห่างระหว่างสินค้า */
+    justify-content: center;
+    gap: 20px;
     padding: 20px;
+    max-width: 1200px;
+    margin: auto;
 }
 
-/* ✅ การ์ดสินค้า */
+/* ปรับขนาดสินค้าให้เป็น 3 คอลัมน์ */
 .product-card {
-    width: 250px; /* กำหนดขนาดการ์ดสินค้า */
+    flex: 1 1 calc(33.33% - 20px);
+    max-width: 300px;
     background: white;
     border-radius: 8px;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     padding: 15px;
     transition: transform 0.2s ease-in-out;
-    flex: 1 1 250px;  /* ✅ ปรับให้ทุกชิ้นขนาดเท่ากัน */
-    max-width: 250px; /* ✅ ป้องกันขนาดใหญ่เกิน */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .product-card:hover {
     transform: translateY(-3px);
 }
 
-/* ✅ รูปสินค้า */
+/* รูปสินค้า */
 .product-image {
     width: 100%;
-    height: 160px;
+    height: 180px;
     object-fit: cover;
     border-radius: 5px;
 }
 
-/* ✅ ปรับตัวหนังสือให้ดูสวยขึ้น */
-.product-name {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 10px 0 5px;
-}
-
-.product-price {
-    font-size: 16px;
-    color: #007bff;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.product-description {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 10px;
-}
-
-/* ✅ ปุ่ม */
-.btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background 0.2s;
-}
-
-.btn:hover {
-    background-color: #0056b3;
-}
-
-/* ✅ Responsive: แสดงเป็น 2 คอลัมน์เมื่อหน้าจอเล็ก */
-@media screen and (max-width: 768px) {
-    .product-grid {
-        justify-content: center;
-    }
+/* Responsive: ปรับให้เป็น 2 คอลัมน์บนแท็บเล็ต */
+@media screen and (max-width: 1024px) {
     .product-card {
-        width: 100%;
-        max-width: 300px;
+        flex: 1 1 calc(50% - 20px);
+    }
+}
+
+/* ปรับให้เป็น 1 คอลัมน์บนมือถือ */
+@media screen and (max-width: 768px) {
+    .product-card {
+        flex: 1 1 100%;
     }
 }

@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from .models import CustomUser  
 from django.contrib import messages  # ✅ ใช้สำหรับแจ้งเตือน
 from .models import Product, Cart, CartItem, Order, OrderItem
 from .forms import CheckoutForm, AddressForm, PaymentForm
+from .models import CustomUser
+from .forms import CustomUserCreationForm  # ✅ นำเข้าฟอร์มที่สร้างใหม่
 
 def index(request):
     return render(request, 'index.html')
@@ -49,19 +51,16 @@ def add_to_cart(request, product_id):
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        email = request.POST.get('email')  # ✅ รับค่าอีเมลจากฟอร์ม
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.email = form.cleaned_data["email"]  # ✅ บันทึกอีเมล
-            user.save()
+            user = form.save()
             login(request, user)
             messages.success(request, f"🎉 สมัครสมาชิกสำเร็จ! ยินดีต้อนรับ {user.username}")
             return redirect('index')
         else:
             messages.error(request, "❌ กรุณาตรวจสอบข้อมูลให้ถูกต้อง")
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
 
     return render(request, 'signup.html', {'form': form})
 
@@ -132,7 +131,7 @@ def create_order(user):
         return None
 
     last_order = Order.objects.filter(user=user).order_by('-created_at').first()
-    if last_order and not last_order.orderitem_set.exists():
+    if last_order and not last_order.items.exists():  # ✅ ใช้ related_name "items"
         print(f"⚠️ คำสั่งซื้อ #{last_order.id} ยังไม่มีสินค้า ลบออกก่อน")
         last_order.delete()
 

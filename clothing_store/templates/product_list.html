@@ -1,46 +1,51 @@
-{% extends "base.html" %}  <!-- ✅ ต้องอยู่บรรทัดแรกสุด -->
-{% load static %}  <!-- ✅ ย้ายมาไว้ถัดไป -->
+{% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 <h2 class="page-title">รายการสินค้า</h2>
-<div class="product-grid">
-    {% for product in products %}
-    <div class="product-card">
-        <p class="product-id">#{{ product.id }}</p>  <!-- ✅ แสดง ID ของสินค้า -->
-        {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
-        {% else %}
-            <img src="{% static 'images/default-product.png' %}" alt="สินค้ายังไม่มีรูป" class="product-image">
-        {% endif %}
 
-        <h3 class="product-name">{{ product.name }}</h3>
-        <p class="product-price">{{ product.price }} บาท</p>
-        <p class="product-description">{{ product.description }}</p>
+<!-- ✅ Container เพิ่มความกว้าง และจัดกึ่งกลาง -->
+<div class="container">
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <p class="product-id">#{{ product.id }}</p>
+            
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+            {% else %}
+                <img src="{% static 'images/default-product.png' %}" alt="สินค้ายังไม่มีรูป" class="product-image">
+            {% endif %}
 
-        <form action="{% url 'add_to_cart' product.id %}" method="POST">
-            {% csrf_token %}
-            <label for="size_{{ product.id }}">ขนาด:</label>
-            <select name="size" id="size_{{ product.id }}" required>
-                <option value="S">S</option>
-                <option value="M">M</option>
-                <option value="L">L</option>
-                <option value="XL">XL</option>
-            </select>
+            <h3 class="product-name">{{ product.name }}</h3>
+            <p class="product-price">{{ product.price }} บาท</p>
+            <p class="product-description">{{ product.description }}</p>
 
-            <label for="color_{{ product.id }}">สี:</label>
-            <select name="color" id="color_{{ product.id }}" required>
-                <option value="แดง">แดง</option>
-                <option value="น้ำเงิน">น้ำเงิน</option>
-                <option value="เขียว">เขียว</option>
-                <option value="ดำ">ดำ</option>
-                <option value="ขาว">ขาว</option>
-            </select>
+            <form action="{% url 'add_to_cart' product.id %}" method="POST">
+                {% csrf_token %}
+                <label for="size_{{ product.id }}">ขนาด:</label>
+                <select name="size" id="size_{{ product.id }}" required>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
 
-            <button type="submit" class="btn btn-primary">เพิ่มลงตะกร้า</button>
-        </form>
+                <label for="color_{{ product.id }}">สี:</label>
+                <select name="color" id="color_{{ product.id }}" required>
+                    <option value="แดง">แดง</option>
+                    <option value="น้ำเงิน">น้ำเงิน</option>
+                    <option value="เขียว">เขียว</option>
+                    <option value="ดำ">ดำ</option>
+                    <option value="ขาว">ขาว</option>
+                </select>
+
+                <button type="submit" class="btn btn-primary">เพิ่มลงตะกร้า</button>
+            </form>
+        </div>
+        {% empty %}
+        <p class="no-products">ยังไม่มีสินค้าในร้านค้า</p>
+        {% endfor %}
     </div>
-    {% empty %}
-    <p class="no-products">ยังไม่มีสินค้าในร้านค้า</p>
-    {% endfor %}
 </div>
 {% endblock %}

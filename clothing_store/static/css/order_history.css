@@ -1,0 +1,31 @@
+.order-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.order-history-table th, .order-history-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.order-history-table th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+.order-history-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.order-history-table a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.order-history-table a:hover {
+    color: #0056b3;
+}

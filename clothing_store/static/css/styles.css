@@ -13,13 +13,13 @@ body {
     padding-bottom: 70px; /* ป้องกัน Footer ทับ */
 }
 
-/* Navbar */
+/* ✅ Navbar */
 nav {
     background-color: #000;
     color: white;
     padding: 15px;
     text-align: center;
-    position: fixed; /* ให้ติดอยู่ด้านบน */
+    position: fixed;
     width: 100%;
     top: 0;
     left: 0;
@@ -37,268 +37,205 @@ nav a:hover {
     text-decoration: underline;
 }
 
-/* Footer */
+/* ✅ Footer */
 footer {
     background-color: #000;
     color: white;
     text-align: center;
     padding: 15px;
     width: 100%;
-    position: fixed; /* ให้ติดอยู่ด้านล่าง */
+    position: fixed;
     bottom: 0;
     left: 0;
 }
 
-/* ปรับฟอร์มให้อยู่ตรงกลาง */
-.form-container {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
-    margin: auto; /* จัดกึ่งกลาง */
-}
-
-/* ปรับอินพุตให้เท่ากัน */
-input[type="text"],
-input[type="password"],
-input[type="email"],
-textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-textarea {
-    resize: none;
-}
-
-/* ปุ่ม */
-button, .btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
-    transition: 0.3s;
-    width: 100%;
-}
-
-button:hover, .btn:hover {
-    background-color: #0056b3;
-}
-
-/* ข้อความลิงก์ไปสมัครสมาชิก / ล็อกอิน */
-p {
-    margin-top: 10px;
-}
-
-p a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-p a:hover {
-    text-decoration: underline;
-}
-
-/* ปรับแต่ง Layout ของสินค้าทั้งหมด */
+/* ✅ ปรับแต่ง Layout ของสินค้าทั้งหมด */
 .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
     padding: 20px;
-    justify-content: center;
-}
-
-/* Card ของสินค้า */
-.product-card {
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
-    max-width: 300px;
+    max-width: 1200px;
     margin: auto;
 }
 
-.product-card:hover {
-    transform: translateY(-5px);
-}
-
-/* ตารางสินค้า */
-.cart-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.cart-table th, .cart-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
+/* ✅ Card ของสินค้า */
+.product-card {
+    flex: 1 1 calc(33.33% - 20px);
+    max-width: 300px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    padding: 15px;
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
+.product-card:hover {
+    transform: translateY(-3px);
+}
+
+/* ✅ ปรับให้เป็น 2 คอลัมน์บนแท็บเล็ต */
+@media screen and (max-width: 1024px) {
+    .product-card {
+        flex: 1 1 calc(50% - 20px);
+    }
+}
+
+/* ✅ ปรับให้เป็น 1 คอลัมน์บนมือถือ */
+@media screen and (max-width: 768px) {
+    .product-card {
+        flex: 1 1 100%;
+    }
+}
+
+/* ✅ ปรับตำแหน่งตะกร้าสินค้า */
+.cart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    padding: 20px;
+}
+
+/* ✅ ปรับตารางให้กว้างขึ้น */
+.cart-table {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ ส่วนหัวของตาราง */
 .cart-table th {
     background: #007bff;
     color: white;
-}
-
-/* ปรับแต่งตารางแสดงประวัติคำสั่งซื้อ */
-.table-container {
-    display: flex;
-    justify-content: center; /* จัดให้อยู่ตรงกลางแนวนอน */
-    margin-top: 20px;
-}
-
-.table-order {
-    width: 80%;
-    border-collapse: collapse;
-    background: white;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.table-order th {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
     padding: 12px;
     text-align: center;
+    font-size: 16px;
 }
 
-.table-order td {
-    border: 1px solid #ddd;
-    padding: 10px;
+/* ✅ แถวของสินค้า */
+.cart-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
     text-align: center;
+    font-size: 15px;
 }
 
-.table-order tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.table-order tr:hover {
-    background-color: #e0e0e0;
-}
-
-/* ปุ่มดูรายละเอียด */
-.btn-info {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    padding: 8px 12px;
+/* ✅ ปรับให้ช่องอินพุตของจำนวนสินค้าไม่ใหญ่เกินไป */
+.cart-table input[type="number"] {
+    width: 50px;
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-/* หัวข้อ */
-h2 {
-    color: #007bff;
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-/* สไตล์ของฟอร์ม */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* กำหนดฟอร์มให้สวยงาม */
-.form-group {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-}
-
-.form-group label {
+/* ✅ ปุ่มอัปเดต */
+.btn-update {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
     font-weight: bold;
-    margin-bottom: 5px;
+    transition: background 0.3s, transform 0.2s;
 }
 
-/* สไตล์เฉพาะสำหรับ Checkout */
-.checkout-container {
-    width: 500px;
+.btn-update:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
 }
 
-.checkout-container h3 {
-    color: #333;
-    margin-bottom: 10px;
-    text-align: left;
+/* ✅ ปุ่มลบ */
+.btn-delete {
+    background-color: #ff4d4d; /* ✅ สีแดงสว่างขึ้น */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-/* ช่องเลือกการชำระเงิน */
-input[type="radio"] {
+.btn-delete:hover {
+    background-color: #cc0000; /* ✅ สีแดงเข้มขึ้นเมื่อ hover */
+    transform: scale(1.1);
+}
+
+
+/* ✅ ปุ่มลบ - ปรับไอคอนให้ชัดขึ้น */
+.btn-delete i {
     margin-right: 5px;
 }
 
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    justify-content: center;
-}
-
-.product-card {
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
-    max-width: 300px;
-    margin: auto;
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-}
-
-.product-image {
+/* ✅ ปุ่มชำระเงิน */
+.btn-checkout {
+    display: block;
     width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 5px;
-}
-
-.product-name {
+    max-width: 350px;
+    text-align: center;
+    margin: 20px auto;
+    padding: 15px;
     font-size: 18px;
     font-weight: bold;
-    margin: 10px 0;
-}
-
-.product-price {
-    font-size: 16px;
-    color: #007bff;
-    font-weight: bold;
-}
-
-.product-description {
-    font-size: 14px;
-    color: #666;
-}
-
-.btn {
-    display: inline-block;
-    padding: 10px 15px;
-    background: #007bff;
+    background: linear-gradient(90deg, #28a745 0%, #218838 100%);
     color: white;
+    border-radius: 8px;
     text-decoration: none;
-    border-radius: 5px;
-    margin-top: 10px;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.btn:hover {
-    background: #0056b3;
+.btn-checkout:hover {
+    background: linear-gradient(90deg, #218838 0%, #1e7e34 100%);
+    transform: scale(1.05);
+}
+
+/* ✅ ป้องกันการล้นของเนื้อหา */
+* {
+    box-sizing: border-box;
+}
+
+button, .btn {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+/* ✅ ปรับให้ปุ่มลบและปุ่มอัปเดตไม่เล็กเกินไป */
+.btn-small {
+    padding: 6px 10px;
+    font-size: 14px;
+}
+
+.btn-shop {
+    display: inline-block;
+    background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-shop:hover {
+    background: linear-gradient(90deg, #0056b3 0%, #003f7f 100%);
+    transform: scale(1.05);
 }

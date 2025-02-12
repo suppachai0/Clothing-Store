@@ -1,10 +1,13 @@
 {% extends "base.html" %}
-{% block title %}ชำระเงินสำเร็จ{% endblock %}
+{% load static %}
 
 {% block content %}
-<div class="success-container">
-    <h2>✅ การชำระเงินสำเร็จ!</h2>
-    <p>ขอบคุณที่สั่งซื้อสินค้ากับเรา 🎉</p>
-    <a href="{% url 'index' %}" class="btn">กลับสู่หน้าแรก</a>
+<link rel="stylesheet" href="{% static 'css/payment_success.css' %}">
+
+<div class="payment-success-container">
+    <div class="success-icon">✅</div>
+    <p class="success-message">การชำระเงินสำเร็จ!</p>
+    <p class="thank-you">ขอบคุณที่สั่งซื้อสินค้ากับเรา 🎉</p>
+    <a href="{% url 'index' %}" class="back-home">กลับสู่หน้าแรก</a>
 </div>
 {% endblock %}

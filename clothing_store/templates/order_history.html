@@ -1,37 +1,31 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-<h2>📜 ประวัติการสั่งซื้อ</h2>
+<h2 class="page-title">📜 ประวัติการสั่งซื้อ</h2>
 
-<div class="table-container">
-    <table class="table-order">
-        <thead>
-            <tr>
-                <th>รหัสคำสั่งซื้อ</th>
-                <th>วันที่สั่งซื้อ</th>
-                <th>ราคารวม</th>
-                <th>รหัสผู้ใช้</th>
-                <th>ดูรายละเอียด</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in orders %}
-            <tr>
-                <td>#{{ order.id }}</td>
-                <td>{{ order.created_at|date:"d/m/Y H:i" }}</td>
-                <td>{{ order.user.id }}</td>
-                <td>{{ order.total_price }} บาท</td>
-                <td>
-                    <a href="{% url 'order_detail' order.id %}" class="btn btn-info">🔍 ดูรายละเอียด</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4" class="text-center">ไม่มีคำสั่งซื้อ</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
+{% if orders %}
+<table class="order-history-table">
+    <tr>
+        <th>รหัสคำสั่งซื้อ</th>
+        <th>วันที่สั่งซื้อ</th>
+        <th>ราคาสุทธิ</th>
+        <th>รหัสผู้ใช้</th>
+        <th>รายละเอียด</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>#{{ order.id }}</td>
+        <td>{{ order.created_at|date:"d/m/Y H:i" }}</td>
+        <td>{{ order.total_price|floatformat:2 }} บาท</td>
+        <td>{{ order.user.id }}</td>
+        <td>
+            <a href="{% url 'order_detail' order.id %}">👤 ดูรายละเอียด</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p class="no-orders">🚫 ยังไม่มีประวัติการสั่งซื้อ</p>
+{% endif %}
 {% endblock %}

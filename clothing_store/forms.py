@@ -1,19 +1,20 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from .models import CustomUser  # ✅ ใช้ CustomUser แทน auth.User
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True, label="อีเมล")
 
     class Meta:
-        model = User
+        model = CustomUser  # ✅ ใช้ CustomUser แทน auth.User
         fields = ["username", "email", "password1", "password2"]
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
-        if User.objects.filter(email=email).exists():
+        if CustomUser.objects.filter(email=email).exists():
             raise forms.ValidationError("อีเมลนี้ถูกใช้ไปแล้ว กรุณาใช้อีเมลอื่น")
         return email
+
 
 class AddressForm(forms.Form):
     full_name = forms.CharField(label="ชื่อ-นามสกุล", max_length=100, required=True)
