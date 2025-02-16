@@ -10,7 +10,6 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
-
 # 🛍️ สินค้า
 class Product(models.Model):
     name = models.CharField(max_length=255)
@@ -24,7 +23,7 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-# 📌 คำสั่งซื้อ (✅ ลบซ้ำ)
+# 🛒 คำสั่งซื้อ
 class Order(models.Model):
     STATUS_CHOICES = [
         ('pending', 'รอดำเนินการ'),
@@ -34,7 +33,17 @@ class Order(models.Model):
         ('cancelled', 'ยกเลิก'),
     ]
 
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  # ✅ เปลี่ยนจาก User -> CustomUser
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=255, default="ไม่ระบุ")  # ✅ กำหนดค่าเริ่มต้น
+    phone_number = models.CharField(max_length=10, default="0000000000")  # ✅ กำหนดค่าเริ่มต้น
+    address = models.TextField(default="ไม่ระบุ")  # ✅ กำหนดค่าเริ่มต้น
+    postal_code = models.CharField(max_length=5, default="00000")  # ✅ กำหนดค่าเริ่มต้น
+    payment_method = models.CharField(max_length=20, choices=[
+        ('credit_card', 'บัตรเครดิต'),
+        ('paypal', 'PayPal'),
+        ('bank_transfer', 'โอนเงินผ่านธนาคาร'),
+        ('cash_on_delivery', 'เก็บเงินปลายทาง')
+    ], default="cash_on_delivery")  # ✅ กำหนดค่าเริ่มต้น
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -42,20 +51,25 @@ class Order(models.Model):
     def __str__(self):
         return f"Order {self.id} - {self.user.username} - {self.status}"
 
-# 📦 รายการสินค้าในคำสั่งซื้อ (✅ ลบซ้ำ)
+
+# 📦 รายการสินค้าในคำสั่งซื้อ
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")  # ✅ เพิ่ม related_name
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    size = models.CharField(max_length=5, choices=[('S', 'Small'), ('M', 'Medium'), ('L', 'Large'), ('XL', 'Extra Large')], default="M")
-    color = models.CharField(max_length=10, choices=[('red', 'Red'), ('blue', 'Blue'), ('black', 'Black'), ('white', 'White')], default="black")
+    size = models.CharField(max_length=5, choices=[
+        ('S', 'Small'), ('M', 'Medium'), ('L', 'Large'), ('XL', 'Extra Large')
+    ], default="M")
+    color = models.CharField(max_length=10, choices=[
+        ('red', 'Red'), ('blue', 'Blue'), ('black', 'Black'), ('white', 'White')
+    ], default="black")
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name} ({self.size}, {self.color})"
 
 # 🛒 ตะกร้าสินค้า
 class Cart(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)  # ✅ เปลี่ยนจาก User -> CustomUser
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -63,25 +77,15 @@ class Cart(models.Model):
 
 # 📦 รายการสินค้าในตะกร้า
 class CartItem(models.Model):
-    SIZE_CHOICES = [
-        ('S', 'Small'),
-        ('M', 'Medium'),
-        ('L', 'Large'),
-        ('XL', 'Extra Large'),
-    ]
-
-    COLOR_CHOICES = [
-        ('red', 'Red'),
-        ('blue', 'Blue'),
-        ('black', 'Black'),
-        ('white', 'White'),
-    ]
-
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    size = models.CharField(max_length=5, choices=SIZE_CHOICES, default="M")
-    color = models.CharField(max_length=10, choices=COLOR_CHOICES, default="black")
+    size = models.CharField(max_length=5, choices=[
+        ('S', 'Small'), ('M', 'Medium'), ('L', 'Large'), ('XL', 'Extra Large')
+    ], default="M")
+    color = models.CharField(max_length=10, choices=[
+        ('red', 'Red'), ('blue', 'Blue'), ('black', 'Black'), ('white', 'White')
+    ], default="black")
 
     def total_price(self):
         return self.product.price * self.quantity

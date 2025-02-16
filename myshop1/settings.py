@@ -112,6 +112,8 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'clothing_store' / 'static',  # ✅ ตำแหน่งไฟล์ static
+     "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'

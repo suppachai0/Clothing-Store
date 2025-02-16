@@ -2,12 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser  
-from django.contrib import messages  # ✅ ใช้สำหรับแจ้งเตือน
-from .models import Product, Cart, CartItem, Order, OrderItem
-from .forms import CheckoutForm, AddressForm, PaymentForm
-from .models import CustomUser
-from .forms import CustomUserCreationForm  # ✅ นำเข้าฟอร์มที่สร้างใหม่
+from django.contrib import messages
+from .models import CustomUser, Product, Cart, CartItem, Order, OrderItem
+from .forms import CheckoutForm, CustomUserCreationForm
 
 def index(request):
     return render(request, 'index.html')
@@ -49,59 +46,52 @@ def add_to_cart(request, product_id):
 
     return redirect('cart')
 
-def signup(request):
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, f"🎉 สมัครสมาชิกสำเร็จ! ยินดีต้อนรับ {user.username}")
-            return redirect('index')
-        else:
-            messages.error(request, "❌ กรุณาตรวจสอบข้อมูลให้ถูกต้อง")
-    else:
-        form = CustomUserCreationForm()
-
-    return render(request, 'signup.html', {'form': form})
-
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            messages.success(request, f"🔓 เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับ {user.username}")
-            return redirect('index')
-        else:
-            messages.error(request, "❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
-
-    return render(request, 'login.html')
-
-def logout_view(request):
-    logout(request)
-    messages.info(request, "📢 ออกจากระบบเรียบร้อยแล้ว")
-    return redirect('index')
-
 @login_required
 def checkout_view(request):
     if request.method == "POST":
-        address_form = AddressForm(request.POST)
-        payment_form = PaymentForm(request.POST)
+        form = CheckoutForm(request.POST)
+        if form.is_valid():
+            full_name = form.cleaned_data["fullname"]
+            phone_number = form.cleaned_data["phone_number"]
+            address = form.cleaned_data["address"]
+            postal_code = form.cleaned_data["postal_code"]
+            payment_method = form.cleaned_data["payment_method"]
 
-        if address_form.is_valid() and payment_form.is_valid():
-            order = create_order(request.user)
-            messages.success(request, "🛒 คำสั่งซื้อถูกสร้างเรียบร้อยแล้ว!")
-            return redirect('payment_success')
+            cart = get_object_or_404(Cart, user=request.user)
 
+            if not cart.items.exists():
+                messages.warning(request, "⚠️ ตะกร้าของคุณว่างเปล่า ไม่สามารถสั่งซื้อได้")
+                return redirect("cart")
+
+            total_price = sum(item.product.price * item.quantity for item in cart.items.all())
+
+            order = Order.objects.create(
+                user=request.user,
+                full_name=full_name,
+                phone_number=phone_number,
+                address=address,
+                postal_code=postal_code,
+                payment_method=payment_method,
+                total_price=total_price
+            )
+
+            for item in cart.items.all():
+                OrderItem.objects.create(
+                    order=order,
+                    product=item.product,
+                    quantity=item.quantity,
+                    size=item.size,
+                    color=item.color
+                )
+
+            cart.items.all().delete()
+
+            messages.success(request, "🎉 คำสั่งซื้อของคุณถูกบันทึกเรียบร้อยแล้ว!")
+            return redirect("payment_success")
     else:
-        address_form = AddressForm()
-        payment_form = PaymentForm()
+        form = CheckoutForm()
 
-    return render(request, "checkout.html", {
-        "address_form": address_form,
-        "payment_form": payment_form
-    })
+    return render(request, "checkout.html", {"form": form})
 
 @login_required
 def order_history(request):
@@ -111,54 +101,13 @@ def order_history(request):
 @login_required
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
-    order_items = OrderItem.objects.filter(order=order)
-
-    print(f"🛒 คำสั่งซื้อ {order.id} มีสินค้า: {order_items.count()} รายการ")
-    for item in order_items:
-        print(f"➡️ {item.product.name}, จำนวน: {item.quantity}, ขนาด: {item.size}, สี: {item.color}")
+    order_items = order.items.all()
 
     return render(request, 'order_detail.html', {
         'order': order,
         'order_items': order_items,
-        'user_id': order.user.id  # ✅ ส่ง user_id ไปยัง template
+        'user_id': order.user.id
     })
-
-def create_order(user):
-    cart = get_object_or_404(Cart, user=user)
-
-    if not cart.items.exists():
-        messages.warning(user, "⚠️ ตะกร้าว่างเปล่า ไม่สามารถสร้างคำสั่งซื้อได้")
-        return None
-
-    last_order = Order.objects.filter(user=user).order_by('-created_at').first()
-    if last_order and not last_order.items.exists():  # ✅ ใช้ related_name "items"
-        print(f"⚠️ คำสั่งซื้อ #{last_order.id} ยังไม่มีสินค้า ลบออกก่อน")
-        last_order.delete()
-
-    order = Order.objects.create(user=user, total_price=0)
-    print(f"📝 สร้างคำสั่งซื้อใหม่ ID: {order.id}")
-
-    total_price = 0
-    for item in cart.items.all():
-        order_item = OrderItem.objects.create(
-            order=order,
-            product=item.product,
-            quantity=item.quantity,
-            size=item.size,
-            color=item.color
-        )
-        print(f"✅ บันทึก OrderItem: {order_item.id}")
-
-        total_price += item.product.price * item.quantity
-
-    order.total_price = total_price
-    order.save()
-    print(f"💰 คำสั่งซื้อ {order.id} รวมเป็นเงิน: {order.total_price} บาท")
-
-    cart.items.all().delete()
-    print("🧹 ล้างตะกร้าสำเร็จ")
-
-    return order
 
 @login_required
 def remove_from_cart(request, item_id):
@@ -181,3 +130,38 @@ def update_cart(request, item_id):
             messages.info(request, "🛒 สินค้าถูกลบออกจากตะกร้าเนื่องจากจำนวนเป็น 0")
 
     return redirect('cart')
+
+def signup(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, f"🎉 สมัครสมาชิกสำเร็จ! ยินดีต้อนรับ {user.username}")
+            return redirect('index')
+        else:
+            messages.error(request, "❌ กรุณาตรวจสอบข้อมูลให้ถูกต้อง")
+    else:
+        form = CustomUserCreationForm()
+
+    return render(request, 'signup.html', {'form': form})
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            messages.success(request, f"🔓 เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับ {user.username}")
+            return redirect('index')
+        else:
+            messages.error(request, "❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
+
+    return render(request, 'login.html')
+
+def logout_view(request):
+    logout(request)
+    messages.info(request, "📢 ออกจากระบบเรียบร้อยแล้ว")
+    return redirect('index')

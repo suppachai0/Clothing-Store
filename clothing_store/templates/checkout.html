@@ -1,20 +1,66 @@
-{% extends "base.html" %}
-{% block title %}ชำระเงิน{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ชำระเงิน</title>
+    <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+    <script src="{% static 'js/checkout.js' %}" defer></script>
+</head>
+<body>
+    <div class="checkout-container">
+        <h2>🛍️ ชำระเงิน</h2>
 
-{% block content %}
-<div class="checkout-container">
-    <h2>ชำระเงิน</h2>
+        <form id="checkout-form" method="POST">
+            {% csrf_token %}
 
-    <form method="post">
-        {% csrf_token %}
+            <div class="form-group">
+                <label for="fullname">ชื่อ-นามสกุล:</label>
+                <input type="text" id="fullname" name="fullname" required>
+            </div>
 
-        <h3>📍 ที่อยู่ในการจัดส่ง</h3>
-        {{ address_form.as_p }}
+            <div class="form-group">
+                <label for="phone_number">เบอร์โทรศัพท์:</label>
+                <input type="tel" id="phone_number" name="phone_number" required>
+            </div>
 
-        <h3>💳 วิธีการชำระเงิน</h3>
-        {{ payment_form.as_p }}
+            <div class="form-group">
+                <label for="address">ที่อยู่:</label>
+                <textarea id="address" name="address" rows="3" required></textarea>
+            </div>
 
-        <button type="submit" class="btn">ดำเนินการชำระเงิน</button>
-    </form>
-</div>
-{% endblock %}
+            <div class="form-group">
+                <label for="postal_code">รหัสไปรษณีย์:</label>
+                <input type="text" id="postal_code" name="postal_code" required>
+            </div>
+
+            <div class="form-group">
+                <label for="payment_method">เลือกวิธีการชำระเงิน:</label>
+                <select id="payment_method" name="payment_method" required>
+                    <option value="">-- กรุณาเลือก --</option>
+                    <option value="credit_card">บัตรเครดิต</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="bank_transfer">โอนเงินผ่านธนาคาร</option>
+                    <option value="cash_on_delivery">เก็บเงินปลายทาง</option>
+                </select>
+            </div>
+
+            <div id="credit-card-section" class="hidden">
+                <label for="credit_card_number">หมายเลขบัตรเครดิต:</label>
+                <input type="text" id="credit_card_number" name="credit_card_number">
+            </div>
+
+            <div id="paypal-section" class="hidden">
+                <label for="paypal_email">อีเมล PayPal:</label>
+                <input type="email" id="paypal_email" name="paypal_email">
+                <p>🔒 คุณจะถูกนำไปยังหน้า PayPal เพื่อทำการชำระเงิน</p>
+            </div>
+
+            <button type="submit">✅ ดำเนินการชำระเงิน</button>
+        </form>
+
+        <div id="error-messages"></div>
+    </div>
+</body>
+</html>

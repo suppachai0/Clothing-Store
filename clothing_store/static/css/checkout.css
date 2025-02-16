@@ -1,60 +1,121 @@
-/* ✅ ตั้งค่าพื้นที่ของ Checkout */
+/* ✅ ตั้งค่าพื้นหลังให้ดูสวยขึ้น */
+body {
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+}
+
+/* ✅ ปรับให้ฟอร์มดูโดดเด่น */
 .checkout-container {
-    max-width: 450px;
-    margin: 40px auto;
-    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 30px;
     background: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
-    text-align: left;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    border: 2px solid #ccc;
 }
 
-/* ✅ หัวข้อหลัก */
-.checkout-title {
-    font-size: 22px;
-    color: #333;
-    margin-bottom: 20px;
+/* ✅ ปรับหัวข้อ */
+h2 {
     text-align: center;
+    color: #333;
+    font-size: 22px;
+    margin-bottom: 15px;
 }
 
-/* ✅ ปรับแต่งฟอร์ม */
-.checkout-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+/* ✅ ปรับระยะห่างของฟอร์ม */
+.form-group {
+    margin-bottom: 15px;
 }
 
-/* ✅ ปรับแต่ง Label */
-.checkout-form label {
-    font-weight: bold;
-    font-size: 14px;
-    color: #555;
-}
-
-/* ✅ ปรับแต่ง Input และ Select */
+/* ✅ ปรับ input, select และ textarea */
 .checkout-form input,
 .checkout-form select,
 .checkout-form textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
+    padding: 12px;
+    border: 1px solid #bbb;
     border-radius: 5px;
+    box-sizing: border-box;
     font-size: 16px;
+    transition: 0.2s;
 }
 
-/* ✅ ปรับแต่งปุ่มยืนยันการสั่งซื้อ */
+/* ✅ ปรับสีของ Placeholder */
+.checkout-form input::placeholder,
+.checkout-form textarea::placeholder {
+    color: #888;
+    font-style: italic;
+}
+
+/* ✅ ปรับปุ่มให้ดูสวย */
 .btn-primary {
-    background-color: #007bff;
+    background: linear-gradient(to right, #007bff, #0056b3);
     color: white;
     border: none;
-    padding: 12px;
+    padding: 14px;
     cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-    text-align: center;
-    font-weight: bold;
+    border-radius: 8px;
+    font-size: 18px;
+    width: 100%;
+    transition: all 0.3s;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background: linear-gradient(to right, #0056b3, #004095);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* ✅ เพิ่ม Animation ในส่วนเลือกวิธีชำระเงิน */
+#payment-details {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#payment-details.active {
+    display: block;
+    opacity: 1;
+}
+
+/* ✅ Responsive Design */
+@media (max-width: 480px) {
+    .checkout-container {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .btn-primary {
+        font-size: 16px;
+        padding: 12px;
+    }
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    background: #ffd6d6;
+    padding: 8px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.checkout-container {
+    width: 50%;
+    margin: auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.error-text {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
 }
