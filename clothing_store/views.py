@@ -106,7 +106,8 @@ def order_detail(request, order_id):
     return render(request, 'order_detail.html', {
         'order': order,
         'order_items': order_items,
-        'user_id': order.user.id
+        'user_id': order.user.id,  # ✅ เพิ่มเครื่องหมาย , ให้ถูกต้อง
+        'shipping_address': order.address,  # ✅ เพิ่มที่อยู่จัดส่ง
     })
 
 @login_required

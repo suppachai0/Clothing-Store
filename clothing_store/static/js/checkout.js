@@ -3,17 +3,21 @@ document.addEventListener("DOMContentLoaded", function () {
     const paymentMethodSelect = document.getElementById("payment_method");
     const creditCardSection = document.getElementById("credit-card-section");
     const paypalSection = document.getElementById("paypal-section");
-    const errorMessagesDiv = document.getElementById("error-messages");
+    const bankTransferSection = document.getElementById("bank-transfer-section");
+    const errorMessagesDiv = document.getElementById("error-messages"); // เพิ่มบรรทัดนี้
 
     // ฟังก์ชันแสดง/ซ่อนฟิลด์ตามวิธีการชำระเงิน
     paymentMethodSelect.addEventListener("change", function () {
         creditCardSection.classList.add("hidden");
         paypalSection.classList.add("hidden");
+        bankTransferSection.classList.add("hidden");
 
         if (this.value === "credit_card") {
             creditCardSection.classList.remove("hidden");
         } else if (this.value === "paypal") {
             paypalSection.classList.remove("hidden");
+        } else if (this.value === "bank_transfer") {
+            bankTransferSection.classList.remove("hidden");
         }
     });
 
@@ -54,7 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (errors.length > 0) {
             displayErrors(errors);
         } else {
-            form.submit();
+            // ถ้าไม่มีข้อผิดพลาด ให้ส่งฟอร์ม
+            this.submit();
         }
     });
 

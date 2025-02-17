@@ -57,7 +57,16 @@
                 <p>🔒 คุณจะถูกนำไปยังหน้า PayPal เพื่อทำการชำระเงิน</p>
             </div>
 
-            <button type="submit">✅ ดำเนินการชำระเงิน</button>
+            <div id="bank-transfer-section" class="hidden">
+                <label for="bank_account">บัญชีธนาคาร: กรุงไทย</label>
+                <input type="text" id="bank_account" name="bank_account" value="123-456-7890" readonly>
+                <p>📌 กรุณาโอนเงินไปยังบัญชีที่ระบุ แล้วอัปโหลดหลักฐานการโอน</p>
+                <label for="bank_receipt">อัปโหลดหลักฐานการโอน:</label>
+                <input type="file" id="bank_receipt" name="bank_receipt" accept="image/*">
+            </div>
+            
+
+            <button type="submit" class="btn-primary">✅ ดำเนินการชำระเงิน</button>
         </form>
 
         <div id="error-messages"></div>
